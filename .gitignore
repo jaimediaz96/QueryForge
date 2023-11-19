@@ -135,6 +135,7 @@ fabric.properties
 
 # Secrets
 .env
+queryforgeapi/src/main/resources/myproyect-404603-b8c702c32b4c.json
 
 # Volumes
 postgres_data/
