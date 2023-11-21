@@ -35,6 +35,12 @@ public class UserController {
         return user != null ? ResponseEntity.ok(user) : ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/username/{username}")
+    public ResponseEntity<UserEntity> getByUsername(@PathVariable String username) {
+        UserEntity user = this.userService.getByUsername(username);
+        return user != null ? ResponseEntity.ok(user) : ResponseEntity.notFound().build();
+    }
+
     @PostMapping
     public ResponseEntity<UserEntity> add(@RequestBody UserEntity user) {
         UserEntity newUser = this.userService.save(user);

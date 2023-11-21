@@ -39,6 +39,12 @@ public class UserService {
         return null;
     }
 
+    public UserEntity getByUsername(String username) {
+        Optional<UserEntity> user = this.userRepository.findFirstByUsername(username);
+        if (user.isPresent()) return user.orElse(null);
+        return null;
+    }
+
     public UserEntity save(UserEntity user) {
         if (user.getUsername() == null) return null;
         if (user.getUsername().isEmpty()) return null;

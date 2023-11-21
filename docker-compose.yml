@@ -25,9 +25,12 @@ services:
     depends_on:
       - db
 
-#  frontend:
-#    build:
-#      context: ./path-to-your-frontend
-#      dockerfile: Dockerfile
-#    ports:
-#      - "3000:80"
+  view:
+    container_name: view
+    build: ./queryforgeview
+    ports:
+      - "9000:3000"
+    volumes:
+      - ./queryforgeview:/app
+    depends_on:
+      - api
