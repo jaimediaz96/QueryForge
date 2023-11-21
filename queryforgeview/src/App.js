@@ -1,23 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import "./App.css";
+import LoginComponent from "./components/LoginComponent";
+import MainComponent from "./components/MainComponent";
 
 function App() {
+  const [isLoggedin, setIsLoggedin] = useState(false);
+  const [loggedInUser, setLoggedInUser] = useState("");
+
+  const handleLoginSuccess = (username) => {
+    setIsLoggedin(true);
+    setLoggedInUser(username);
+  };
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <h1>QueryForge</h1>
       </header>
+      <main className="App-content">
+        {!isLoggedin ? (
+          <LoginComponent onLoginSuccess={handleLoginSuccess} />
+        ) : (
+          <MainComponent username={loggedInUser} />
+        )}
+      </main>
+      <footer className="App-footer">
+        <p>© 2023 QueryForge App By jaimediaz96</p>
+      </footer>
     </div>
   );
 }

@@ -30,6 +30,8 @@ services:
     build: ./queryforgeview
     ports:
       - "9000:3000"
+    environment:
+      - NODE_ENV=production
     volumes:
       - ./queryforgeview:/app
     depends_on:
