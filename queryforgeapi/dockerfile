@@ -1,6 +1,6 @@
 FROM eclipse-temurin:17-jre
 
-ARG JAR_FILE=build/libs/queryforgeapi-0.0.1-SNAPSHOT.jar
+ARG JAR_FILE=build/libs/queryforgeapi-1.0.0.jar
 
 WORKDIR /app
 

@@ -35,7 +35,6 @@ public class WeekStatsRepositoryImpl implements WeekStatsRepository {
 
     private List<WeekStatsDTO> executeQuery(String query) {
         try {
-            System.out.println(query);
             QueryJobConfiguration queryConfig = QueryJobConfiguration.newBuilder(query).build();
 
             Job queryJob = bigQuery.create(JobInfo.newBuilder(queryConfig).build());
