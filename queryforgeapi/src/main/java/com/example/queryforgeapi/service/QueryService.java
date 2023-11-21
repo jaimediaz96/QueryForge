@@ -39,13 +39,11 @@ public class QueryService {
         return null;
     }
 
-    public Page<QueryEntity> getAllByUser(int userId, int page, int elements, String sortBy, String sortDirection) {
+    public Page<QueryEntity> getAllByUserId(int userId, int page, int elements, String sortBy, String sortDirection) {
         Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortBy);
         Pageable pageRequest = PageRequest.of(page, elements, sort);
         if (this.userRepository.findById(userId).isEmpty()) return null;
-        Page<QueryEntity> queries = this.queryPageSortRepository.findAllByUserId(pageRequest, userId);
-        if (queries.isEmpty()) return null;
-        return queries;
+        return this.queryPageSortRepository.findAllByUserId(pageRequest, userId);
     }
 
     public QueryEntity save(QueryEntity query) {

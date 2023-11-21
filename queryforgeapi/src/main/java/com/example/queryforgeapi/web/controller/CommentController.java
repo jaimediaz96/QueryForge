@@ -7,8 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-
 @RestController
 @RequestMapping("/api/comment")
 public class CommentController {
@@ -21,22 +19,42 @@ public class CommentController {
 
     @GetMapping
     public ResponseEntity<Page<CommentEntity>> getAll(@RequestParam(defaultValue = "0") int page,
-                                                      @RequestParam(defaultValue = "10") int elements) {
-        return ResponseEntity.ok(this.commentService.getAll(page, elements));
+                                                      @RequestParam(defaultValue = "10") int elements,
+                                                      @RequestParam(defaultValue = "userId") String sortBy,
+                                                      @RequestParam(defaultValue = "ASC") String sortDirection) {
+        return ResponseEntity.ok(this.commentService.getAll(page, elements, sortBy, sortDirection));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<CommentEntity> getById(@PathVariable int id) {
-        return ResponseEntity.ok(this.commentService.getById(id));
+        CommentEntity comment = this.commentService.getById(id);
+        return comment != null ? ResponseEntity.ok(comment) : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<Page<CommentEntity>> getAllByUserId(@PathVariable int userId,
+                                                              @RequestParam(defaultValue = "0") int page,
+                                                              @RequestParam(defaultValue = "10") int elements,
+                                                              @RequestParam(defaultValue = "userId") String sortBy,
+                                                              @RequestParam(defaultValue = "ASC") String sortDirection) {
+        Page<CommentEntity> comments = this.commentService.getAllByUserId(userId, page, elements, sortBy, sortDirection);
+        return comments != null ? ResponseEntity.ok(comments) : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/query/{queryId}")
+    public ResponseEntity<Page<CommentEntity>> getAllByQueryId(@PathVariable int queryId,
+                                                              @RequestParam(defaultValue = "0") int page,
+                                                              @RequestParam(defaultValue = "10") int elements,
+                                                              @RequestParam(defaultValue = "userId") String sortBy,
+                                                              @RequestParam(defaultValue = "ASC") String sortDirection) {
+        Page<CommentEntity> comments = this.commentService.getAllByQueryId(queryId, page, elements, sortBy, sortDirection);
+        return comments != null ? ResponseEntity.ok(comments) : ResponseEntity.notFound().build();
     }
 
     @PostMapping
     public ResponseEntity<CommentEntity> add(@RequestBody CommentEntity comment) {
-        if (comment.getCommentId() == null || !this.commentService.exists(comment.getCommentId())){
-            comment.setCreatedAt(LocalDateTime.now());
-            return ResponseEntity.ok(this.commentService.save(comment));
-        }
-        return ResponseEntity.badRequest().build();
+        CommentEntity newComment = this.commentService.save(comment);
+        return newComment != null ? ResponseEntity.ok(newComment) : ResponseEntity.badRequest().build();
     }
 
     @DeleteMapping("/{id}")

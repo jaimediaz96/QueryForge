@@ -24,7 +24,7 @@ public class UserController {
     @GetMapping
     public ResponseEntity<Page<UserEntity>> getAll(@RequestParam(defaultValue = "0") int page,
                                                    @RequestParam(defaultValue = "10") int elements,
-                                                   @RequestParam(defaultValue = "price") String sortBy,
+                                                   @RequestParam(defaultValue = "username") String sortBy,
                                                    @RequestParam(defaultValue = "ASC") String sortDirection) {
         return ResponseEntity.ok(this.userService.getAll(page, elements, sortBy, sortDirection));
     }

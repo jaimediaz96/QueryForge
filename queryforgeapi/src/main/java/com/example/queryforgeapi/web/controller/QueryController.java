@@ -37,8 +37,8 @@ public class QueryController {
                                                             @RequestParam(defaultValue = "10") int elements,
                                                             @RequestParam(defaultValue = "name") String sortBy,
                                                             @RequestParam(defaultValue = "ASC") String sortDirection) {
-        Page<QueryEntity> queries = this.queryService.getAllByUser(userId, page, elements, sortBy, sortDirection);
-        return queries != null && !queries.isEmpty() ? ResponseEntity.ok(queries) : ResponseEntity.notFound().build();
+        Page<QueryEntity> queries = this.queryService.getAllByUserId(userId, page, elements, sortBy, sortDirection);
+        return queries != null ? ResponseEntity.ok(queries) : ResponseEntity.notFound().build();
     }
 
     @PostMapping
