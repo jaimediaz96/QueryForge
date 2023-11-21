@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -26,8 +27,9 @@ public class UserService {
         this.userPageSortRepository = userPageSortRepository;
     }
 
-    public Page<UserEntity> getAll(int page, int elements) {
-        Pageable pageRequest = PageRequest.of(page, elements);
+    public Page<UserEntity> getAll(int page, int elements, String sortBy, String sortDirection) {
+        Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortBy);
+        Pageable pageRequest = PageRequest.of(page, elements, sort);
         return this.userPageSortRepository.findAll(pageRequest);
     }
 

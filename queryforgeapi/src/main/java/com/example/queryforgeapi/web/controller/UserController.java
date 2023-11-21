@@ -23,32 +23,27 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<Page<UserEntity>> getAll(@RequestParam(defaultValue = "0") int page,
-                                                   @RequestParam(defaultValue = "10") int elements) {
-        return ResponseEntity.ok(this.userService.getAll(page, elements));
+                                                   @RequestParam(defaultValue = "10") int elements,
+                                                   @RequestParam(defaultValue = "price") String sortBy,
+                                                   @RequestParam(defaultValue = "ASC") String sortDirection) {
+        return ResponseEntity.ok(this.userService.getAll(page, elements, sortBy, sortDirection));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserEntity> getById(@PathVariable int id) {
         UserEntity user = this.userService.getById(id);
-        if (user != null){
-            return ResponseEntity.ok(user);
-        }
-        return ResponseEntity.notFound().build();
+        return user != null ? ResponseEntity.ok(user) : ResponseEntity.notFound().build();
     }
 
     @PostMapping
     public ResponseEntity<UserEntity> add(@RequestBody UserEntity user) {
-        UserEntity aux = this.userService.save(user);
-        if (aux != null) {
-            return ResponseEntity.ok(aux);
-        }
-        return ResponseEntity.badRequest().build();
+        UserEntity newUser = this.userService.save(user);
+        return newUser != null ? ResponseEntity.ok(newUser) : ResponseEntity.badRequest().build();
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<Boolean> updateLastLogin(@PathVariable int id) {
-        if (this.userService.updateLastLogin(id)) return ResponseEntity.ok(true);
-        return ResponseEntity.notFound().build();
+        return this.userService.updateLastLogin(id) ? ResponseEntity.ok(true) : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")

@@ -7,8 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-
 @RestController
 @RequestMapping("/api/query")
 public class QueryController {
@@ -21,23 +19,32 @@ public class QueryController {
 
     @GetMapping
     public ResponseEntity<Page<QueryEntity>> getAll(@RequestParam(defaultValue = "0") int page,
-                                                    @RequestParam(defaultValue = "10") int elements) {
-        return ResponseEntity.ok(this.queryService.getAll(page, elements));
+                                                    @RequestParam(defaultValue = "10") int elements,
+                                                    @RequestParam(defaultValue = "name") String sortBy,
+                                                    @RequestParam(defaultValue = "ASC") String sortDirection) {
+        return ResponseEntity.ok(this.queryService.getAll(page, elements, sortBy, sortDirection));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<QueryEntity> getById(@PathVariable int id) {
-        return ResponseEntity.ok(this.queryService.getById(id));
+        QueryEntity query = this.queryService.getById(id);
+        return query != null ? ResponseEntity.ok(query) : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<Page<QueryEntity>> getAllByUserId(@PathVariable int userId,
+                                                            @RequestParam(defaultValue = "0") int page,
+                                                            @RequestParam(defaultValue = "10") int elements,
+                                                            @RequestParam(defaultValue = "name") String sortBy,
+                                                            @RequestParam(defaultValue = "ASC") String sortDirection) {
+        Page<QueryEntity> queries = this.queryService.getAllByUser(userId, page, elements, sortBy, sortDirection);
+        return queries != null && !queries.isEmpty() ? ResponseEntity.ok(queries) : ResponseEntity.notFound().build();
     }
 
     @PostMapping
     public ResponseEntity<QueryEntity> add(@RequestBody QueryEntity query) {
-        if (query.getQueryId() == null || !this.queryService.exists(query.getQueryId())){
-            query.setCreatedAt(LocalDateTime.now());
-            System.out.println(query);
-            return ResponseEntity.ok(this.queryService.save(query));
-        }
-        return ResponseEntity.badRequest().build();
+        QueryEntity newQuery = this.queryService.save(query);
+        return newQuery != null ? ResponseEntity.ok(newQuery) : ResponseEntity.badRequest().build();
     }
 
     @DeleteMapping("/{id}")

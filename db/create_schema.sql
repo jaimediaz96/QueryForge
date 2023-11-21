@@ -14,7 +14,6 @@ CREATE TABLE IF NOT EXISTS queries (
     query VARCHAR(100) NOT NULL,
     comment TEXT,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    last_update TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users (user_id)
 );
 
