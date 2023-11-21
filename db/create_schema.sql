@@ -11,11 +11,17 @@ CREATE TABLE IF NOT EXISTS queries (
     query_id SERIAL PRIMARY KEY,
     user_id INT NOT NULL,
     name VARCHAR(100) NOT NULL,
-    query VARCHAR(100) NOT NULL,
+    query_term VARCHAR(255) NOT NULL,
+    query_table_name VARCHAR(70) NOT NULL,
+    query_region_name VARCHAR(50),
+    query_country_name VARCHAR(100),
+    query_start_date DATE,
+    query_end_date DATE,
     comment TEXT,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users (user_id)
 );
+
 
 -- comments table
 CREATE TABLE IF NOT EXISTS comments (

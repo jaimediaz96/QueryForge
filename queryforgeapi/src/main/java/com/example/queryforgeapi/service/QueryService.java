@@ -51,8 +51,11 @@ public class QueryService {
         if (this.userRepository.findById(query.getUserId()).isEmpty()) return null;
         if (query.getName() == null) return null;
         if (query.getName().isEmpty()) return null;
-        if (query.getQuery() == null) return null;
-        if (query.getQuery().isEmpty()) return null;
+        if (query.getQueryTerm() == null) return null;
+        if (query.getQueryTerm().isEmpty()) return null;
+        if (query.getQueryTableName() == null || query.getQueryTableName().isEmpty() ||
+            query.getQueryTableName().equalsIgnoreCase("top")) query.setQueryTableName("top");
+        else query.setQueryTableName("rising");
         query.setCreatedAt(LocalDateTime.now());
         return this.queryRepository.save(query);
     }
